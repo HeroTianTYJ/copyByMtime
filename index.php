@@ -1,15 +1,18 @@
 <?php
+date_default_timezone_set('Asia/Shanghai');
+header('Content-Type:text/html;charset=utf-8');
+
 $config = include __DIR__.'/config.php';
 
-function copyByMtime($sourceSrc,$targetSrc='',$mtime=0,$childSrc=''){
+function copyByMtime($sourceSrc,$targetSrc='',$startMtime=0,$endMtime=0,$childSrc=''){
 	$dir = opendir($sourceSrc.'/'.$childSrc);
 	while (!!$file = readdir($dir)){
 		if ($file!='.' && $file!='..'){
 			$path = $sourceSrc.$childSrc.'/'.$file;
 			if (is_dir($path)){
-				copyByMtime($sourceSrc,$targetSrc,$mtime,$childSrc.'/'.$file);
+				copyByMtime($sourceSrc,$targetSrc,$startMtime,$endMtime,$childSrc.'/'.$file);
 			}else{
-				if (filemtime($path) >= $mtime){
+				if (filemtime($path)>=$startMtime && filemtime($path)<=$endMtime){
 					$target = $targetSrc.str_replace($sourceSrc,'',dirname($path));
 					if (!is_dir($target)) mkdir($target,0777,true);
 					copy($path,$target.'/'.basename($path));
@@ -43,11 +46,12 @@ if (empty($_GET['action'])){
 	if ($_POST){
 		if (!isset($config[$_POST['id']])) tip('不存在此项目，请检查您是否添加了项目！');
 		if (!is_dir($config[$_POST['id']][1])) mkdir($config[$_POST['id']][1],0777);
-		copyByMtime($config[$_POST['id']][0],$config[$_POST['id']][1],strtotime($_POST['time'])?strtotime($_POST['time']):time());
-		location('?action=');
+		copyByMtime($config[$_POST['id']][0],$config[$_POST['id']][1],strtotime($_POST['startMtime'])?strtotime($_POST['startMtime']):strtotime(date('Y-m-d')),strtotime($_POST['endMtime'])?strtotime($_POST['endMtime']):time());
+		tip('复制成功！');
 	}
 }elseif ($_GET['action'] == 'add'){
 	if ($_POST){
+		if (!is_dir($_POST['source'])) tip('源路径不存在！');
 		$config[] = [$_POST['source'],$_POST['target']];
 		save($config);
 		location('?action=list');
@@ -55,6 +59,7 @@ if (empty($_GET['action'])){
 }elseif ($_GET['action'] == 'update'){
 	if (!isset($config[$_GET['id']])) tip('不存在此项目！');
 	if ($_POST){
+		if (!is_dir($_POST['source'])) tip('源路径不存在！');
 		$config[$_GET['id']] = [$_POST['source'],$_POST['target']];
 		save($config);
 		location('?action=list');
@@ -109,7 +114,8 @@ if (empty($_GET['action'])){
 <form method="post" action="" class="form" style="width:570px;">
   <dl>
     <dd>项目路径：<select name="id" class="select"><?php foreach ($config as $key=>$value){?><option value="<?php echo $key;?>"><?php echo $value[0];?> => <?php echo $value[1];?></option><?php }?></select></dd>
-    <dd>时间范围：<input type="text" name="time" class="easyui-datetimebox" style="width:180px;height:30px;"></dd>
+    <dd>开始时间：<input type="text" name="startMtime" class="easyui-datetimebox" style="width:180px;height:30px;"> 如果留空则为当天00:00:00</dd>
+    <dd>结束时间：<input type="text" name="endMtime" class="easyui-datetimebox" style="width:180px;height:30px;"> 如果留空则为当前时间</dd>
     <dd class="center"><input type="submit" value="确认复制" class="btn btn-primary radius"></dd>
   </dl>
 </form>
@@ -155,5 +161,9 @@ if (empty($_GET['action'])){
 <?php
 }
 ?>
+
+<div class="copyright">
+  <p>Powered by <a href="https://www.yvjie.cn/" target="_blank">昱杰软件</a> © 2015-<?php echo date('Y');?></p>
+</div>
 </body>
 </html>
