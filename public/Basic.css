@@ -1,0 +1,109 @@
+@charset "utf-8";
+*{
+	padding:0;
+	margin:0;
+}
+body{
+	margin:10px auto;
+	font-size:14px !important;
+	font-family:"宋体";
+	color:#333;
+}
+ul{
+	list-style-type:none;
+}
+a{
+	text-decoration:none;
+	color:#2366a8;
+}
+a:hover{
+	text-decoration:underline;
+}
+.center{
+	text-align:center;
+}
+.header{
+	overflow:hidden;
+	margin:0 0 10px 20px;
+}
+.header h3{
+	margin-top:5px;
+	margin-right:20px;
+	float:left;
+	color:#5A98DE;
+    font-size:14px;
+	font-weight:bold;
+	padding:0;
+}
+.header ul{
+	font-weight:bold;
+	margin:3px 0 0 0;
+}
+.header ul li{
+	float:left;
+	margin:0 5px 0 0;
+	line-height:20px;
+}
+.header ul li a{
+	text-decoration:none;
+	color:#666;
+	display:block;
+	padding:0 5px;
+}
+.header ul li a:hover{
+	background:#F5F5F5;
+	color:#09C;
+}
+.header ul li.current a{
+	background:#666;
+	display:block;
+	color:#FFF;
+}
+div.list{
+	margin:0 auto;
+	clear:both;
+}
+.list table{
+	border-collapse:collapse;
+	margin:0 15px;
+	width:auto;
+}
+.list table tr th{
+	border:1px dotted #deeffb;
+	line-height:200%;
+	background:#FFF;
+	font-size:14px;
+	text-align:center;
+	font-weight:bold;
+}
+.list table tr:hover{
+	background:#deeffb;
+}
+.list table tr td{
+	text-align:center;
+	border:1px dotted #deeffb;
+	line-height:180%;
+	font-size:14px;
+	font-family:"宋体";
+}
+p.nothing{
+	text-align:center;
+	font-size:16px;
+	font-weight:bold;
+	padding-top:40px;
+	clear:both;
+}
+.form{
+	width:428px;
+	margin:0 auto;
+	clear:both;
+}
+.form dl dd{
+	line-height:35px;
+}
+.form dl dd input.input-text{
+	width:358px;
+}
+.form dl dd select{
+	width:500px;
+}
