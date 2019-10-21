@@ -6,5 +6,6 @@
             "email": "yujiesoft@qq.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "license": "Apache-2.0"
 }
